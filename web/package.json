@@ -1,0 +1,32 @@
+{
+  "name": "nuxt-app",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "env $(cat ../.env | xargs) nuxt dev --host 0.0.0.0",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "generate-api": "openapi-ts"
+  },
+  "dependencies": {
+    "@nuxt/eslint": "1.9.0",
+    "@nuxt/image": "1.11.0",
+    "@nuxt/scripts": "0.11.13",
+    "@nuxt/ui": "3.3.3",
+    "@nuxtjs/mdc": "^0.17.3",
+    "@tailwindcss/typography": "^0.5.16",
+    "@unhead/vue": "^2.0.14",
+    "better-sqlite3": "^12.2.0",
+    "eslint": "^9.34.0",
+    "nuxt": "^4.0.3",
+    "tailwindcss": "^4.1.12",
+    "typescript": "^5.9.2",
+    "vue": "^3.5.20",
+    "vue-router": "^4.5.1"
+  },
+  "devDependencies": {
+    "@hey-api/openapi-ts": "^0.82.3"
+  }
+}

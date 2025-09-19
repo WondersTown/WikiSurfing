@@ -1,0 +1,29 @@
+[project]
+name = "tequila"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "yanli", email = "mail@yanli.one"},
+]
+dependencies = ["pydantic-ai-slim[openai]>=0.8.1", "prompt-bottle>=0.3.1", "qwq-tag>=0.1.2", "python-dotenv>=1.1.1", "logfire[fastapi]>=4.3.6", "pyyaml>=6.0.2", "types-networkx>=3.5.0.20250830", "networkx>=3.5", "opendal>=0.46.0", "filelock>=3.19.1", "fastapi>=0.116.1", "uvicorn[fastapi]>=0.35.0", "httpx>=0.28.1", "sse-starlette>=3.0.2", "scipy>=1.16.1"]
+requires-python = ">=3.13"
+readme = "README.md"
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+[dependency-groups]
+dev = [
+    "rich>=14.1.0",
+    "ruff>=0.12.11",
+]
+
+[tool.pdm.scripts]
+fix = { shell = "ruff check --fix && ruff format" }
+check = { shell = 'ruff check && ruff format --check' }
+export-openapi = { shell = "python -c \"from tequila.api import app; import json; openapi = app.openapi(); openapi['servers'] = [{'url': '/api'}]; json.dump(openapi, open('../openapi.json', 'w'), indent=2)\"" }

@@ -1,0 +1,28 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Base styles */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Links */
+a {
+  @apply transition-colors duration-200;
+}
+
+/* Focus styles */
+*:focus {
+  @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+}
+
+/* NuxtLink focus styles */
+.router-link-active:focus,
+.router-link-exact-active:focus,
+a[href]:focus {
+  @apply outline-none ring-0;
+}

@@ -1,0 +1,9 @@
+---
+alwaysApply: true
+---
+For web app, here are the guidelines to follow:
+- The tech stack is vite+nuxt+typescript+tailwindcss(v4)
+- Always use minimalist style if no certain style specified by the user
+- Always use inline tailwindcss for style unless a named class is needed
+- Always keep style as scoped if possible. Remember to add @reference ".../main.css" to the style scoped
+- Prefer to use link instead of button

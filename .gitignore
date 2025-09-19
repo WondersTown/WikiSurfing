@@ -1,0 +1,4 @@
+default/
+output/
+dev/
+.env

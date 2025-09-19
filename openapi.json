@@ -1,0 +1,562 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Tequila Wiki API",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{space_name}/articles/{title}/generate": {
+      "post": {
+        "summary": "Generate Article",
+        "description": "Generate an article based on the provided parameters.",
+        "operationId": "generate_article_spaces__space_name__articles__title__generate_post",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Title"
+            }
+          },
+          {
+            "name": "space_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Space Name"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GenerateArticleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{space_name}/articles/{title}": {
+      "get": {
+        "summary": "Get Article",
+        "description": "Get a proto article with context for the given title.",
+        "operationId": "get_article_spaces__space_name__articles__title__get",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Title"
+            }
+          },
+          {
+            "name": "space_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Space Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{space_name}/articles/{title}/proto": {
+      "get": {
+        "summary": "Get Article Proto",
+        "description": "Get a proto article with context for the given title.",
+        "operationId": "get_article_proto_spaces__space_name__articles__title__proto_get",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Title"
+            }
+          },
+          {
+            "name": "space_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Space Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/ProtoArticle"
+                    },
+                    {
+                      "$ref": "#/components/schemas/Article"
+                    }
+                  ],
+                  "title": "Response Get Article Proto Spaces  Space Name  Articles  Title  Proto Get"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{space_name}/articles/{title}/proto/context": {
+      "get": {
+        "summary": "Get Article Proto With Context",
+        "description": "Get a proto article with context for the given title.",
+        "operationId": "get_article_proto_with_context_spaces__space_name__articles__title__proto_context_get",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Title"
+            }
+          },
+          {
+            "name": "space_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Space Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProtoWithContextResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spaces/{space_name}/articles/{title}/proto/related": {
+      "get": {
+        "summary": "Get Article Proto With Related",
+        "description": "Get a proto article with related articles for the given title.",
+        "operationId": "get_article_proto_with_related_spaces__space_name__articles__title__proto_related_get",
+        "parameters": [
+          {
+            "name": "title",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Title"
+            }
+          },
+          {
+            "name": "space_name",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Space Name"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProtoWithRelatedResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Article": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "article",
+            "title": "Kind",
+            "default": "article"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "alt_title": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true,
+            "title": "Alt Title"
+          },
+          "summary": {
+            "type": "string",
+            "title": "Summary",
+            "default": ""
+          },
+          "sections": {
+            "items": {
+              "$ref": "#/components/schemas/Section"
+            },
+            "type": "array",
+            "title": "Sections"
+          },
+          "links": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "type": "object",
+            "title": "Links"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "Article"
+      },
+      "GenerateArticleRequest": {
+        "properties": {
+          "lang": {
+            "type": "string",
+            "title": "Lang",
+            "default": "\u4e2d\u6587"
+          },
+          "context": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string",
+                "const": "auto"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Context",
+            "default": "auto"
+          },
+          "style_inst": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Style Inst"
+          },
+          "streaming": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ],
+            "title": "Streaming",
+            "default": false
+          }
+        },
+        "type": "object",
+        "title": "GenerateArticleRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ProtoArticle": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "const": "proto_article",
+            "title": "Kind",
+            "default": "proto_article"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "alt_title": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true,
+            "title": "Alt Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "ProtoArticle"
+      },
+      "ProtoWithContextResponse": {
+        "properties": {
+          "proto": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProtoArticle"
+              },
+              {
+                "$ref": "#/components/schemas/Article"
+              }
+            ],
+            "title": "Proto",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "article": "#/components/schemas/Article",
+                "proto_article": "#/components/schemas/ProtoArticle"
+              }
+            }
+          },
+          "context": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "proto",
+          "context"
+        ],
+        "title": "ProtoWithContextResponse"
+      },
+      "ProtoWithRelatedResponse": {
+        "properties": {
+          "proto": {
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/ProtoArticle"
+              },
+              {
+                "$ref": "#/components/schemas/Article"
+              }
+            ],
+            "title": "Proto",
+            "discriminator": {
+              "propertyName": "kind",
+              "mapping": {
+                "article": "#/components/schemas/Article",
+                "proto_article": "#/components/schemas/ProtoArticle"
+              }
+            }
+          },
+          "related_articles": {
+            "items": {
+              "$ref": "#/components/schemas/Article"
+            },
+            "type": "array",
+            "title": "Related Articles"
+          }
+        },
+        "type": "object",
+        "required": [
+          "proto",
+          "related_articles"
+        ],
+        "title": "ProtoWithRelatedResponse"
+      },
+      "Section": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "type": "string",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "title": "Section"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/api"
+    }
+  ]
+}
