@@ -1,8 +1,12 @@
 {
+  "outputDirectory": ".output/public", 
+  "installCommand": "pnpm install",
+  "buildCommand": "pnpm build",
+  "framework": "nuxtjs",
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "$API_URL/$1"
+      "destination": "https://api.wikisurf.ing/api/$1"
     }
   ]
 }
