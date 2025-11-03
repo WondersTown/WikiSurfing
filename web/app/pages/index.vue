@@ -56,12 +56,6 @@
 <script setup>
 const recentArticles = ref([
   {
-    title: "黑林村",
-    slug: "黑林村",
-    excerpt: "...",
-    date: "..."
-  },
-  {
     title: "黑林村瘟疫",
     slug: "黑林村瘟疫",
     excerpt: "...",

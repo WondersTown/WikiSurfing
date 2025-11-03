@@ -5,6 +5,7 @@ from pydantic_ai.models.openai import OpenAIChatModel
 from pydantic_ai.settings import ModelSettings
 from tequila.storage.space import Space
 from opendal import AsyncOperator
+from pathlib import Path
 
 # Global variables to store model
 _global_model: OpenAIChatModel = None # type: ignore
@@ -16,14 +17,14 @@ async def get_model() -> OpenAIChatModel:
 async def get_space(space_name: str) -> Space:
     opendal = AsyncOperator(
         "fs",
-        root=space_name,
+        root=str(Path('data')/Path(space_name)),
     )
     space = Space(
         name=space_name,
         _opendal=opendal,
         _docs_path="docs",
         _graph_file="graph.pkl",
-        _lock_fs_file=f"{space_name}/graph.lock",
+        _lock_fs_file=str(Path('data')/Path(space_name)/Path("graph.lock")),
     )
     return space
 

@@ -19,10 +19,18 @@
   </div>
 
   <!-- Not Found (neither article nor proto exists) -->
-  <div v-else-if="!apiResponse" class="text-center py-16">
+  <div v-else-if="!apiResponse && !isGenerating" class="text-center py-16">
     <h1 class="text-3xl font-bold text-gray-900 mb-4">Article Not Found</h1>
     <p class="text-gray-600 mb-8">The article you're looking for doesn't exist yet.</p>
-    <div class="text-center">
+    <div class="text-center space-x-4">
+      <a 
+        href="#"
+        class="text-green-600 hover:text-green-800 underline disabled:text-gray-400 disabled:cursor-not-allowed"
+        :class="{ 'pointer-events-none': isGenerating }"
+        @click.prevent="startStreamingFromEmpty()"
+      >
+        {{ isGenerating ? 'Generating...' : 'Generate from empty' }}
+      </a>
       <a href="#" class="text-gray-600 hover:text-gray-800 underline" @click="$router.go(-1)">
         Go Back
       </a>
@@ -30,7 +38,7 @@
   </div>
 
   <!-- Generation Status (when generating) -->
-  <div v-else-if="isGenerating && !streamingArticle" class="max-w-4xl mx-auto py-4 text-center">
+  <div v-else-if="isGenerating && !currentStreamingArticle" class="max-w-4xl mx-auto py-4 text-center">
     <div class="flex justify-center items-center mb-4">
       <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-green-600"></div>
       <span class="ml-3 text-green-600 font-medium">Generating article...</span>
@@ -41,7 +49,7 @@
   </div>
 
   <!-- Streaming Content (when generating and have partial content) -->
-  <div v-else-if="isGenerating && streamingArticle">
+  <div v-else-if="isGenerating && currentStreamingArticle">
     <!-- Generation Status Bar -->
     <div class="max-w-4xl mx-auto py-4 text-center border-b border-gray-200 mb-6">
       <div class="flex justify-center items-center">
@@ -53,7 +61,7 @@
       </div>
     </div>
     <!-- Partial Article Content -->
-    <ArticleRenderer :api-article="streamingArticle" :is-generating="isGenerating" />
+    <ArticleRenderer :api-article="currentStreamingArticle" :is-generating="isGenerating" />
   </div>
 
   <!-- Generation Failed State -->
@@ -188,7 +196,7 @@ const { data: apiResponse, pending, error, refresh } = await useLazyAsyncData<Ar
   }
 )
 
-// Article generation streaming
+// Article generation streaming (default behavior)
 const { article: streamingArticle, abortController, startStreaming, stopStreaming } = useStreamingArticle({
   spaceName: 'default',
   title: title,
@@ -199,15 +207,36 @@ const { article: streamingArticle, abortController, startStreaming, stopStreamin
   }
 })
 
+// Article generation streaming for "Generate from empty"
+const { 
+  article: emptyStreamingArticle, 
+  abortController: emptyAbortController, 
+  startStreaming: startStreamingEmptyInner, 
+  stopStreaming: stopStreamingEmptyInner 
+} = useStreamingArticle({
+  spaceName: 'default',
+  title: title,
+  request: {
+    lang: '中文',
+    style_inst: '中世纪欧洲风格，注意地名不能叫做\'欧洲\'',
+    context: '(1348-1351)',
+  }
+})
+
 // Track generation state
 const generationFailed = ref(false)
 
-// Computed to check if streaming is active based on abort controller
+// Computed to check if streaming is active based on abort controllers
 const isGenerating = computed(() => {
-  return abortController.value !== null
+  return abortController.value !== null || emptyAbortController.value !== null
 })
 
-// Enhanced streaming functions with state management
+// Use whichever streaming article is present (prefer empty-generation one if available)
+const currentStreamingArticle = computed(() => {
+  return emptyStreamingArticle.value || streamingArticle.value
+})
+
+// Enhanced streaming functions with state management (default)
 const enhancedStartStreaming = async () => {
   try {
     generationFailed.value = false
@@ -220,23 +249,35 @@ const enhancedStartStreaming = async () => {
   }
 }
 
+// Start streaming from empty context
+const startStreamingFromEmpty = async () => {
+  try {
+    generationFailed.value = false
+    await startStreamingEmptyInner()
+  } catch (error) {
+    console.error('Generation (empty) failed:', error)
+    generationFailed.value = true
+  }
+}
+
 const enhancedStopStreaming = () => {
   stopStreaming()
+  stopStreamingEmptyInner()
   generationFailed.value = false
 }
 
 // Computed to get the article to display
 const displayArticle = computed(() => {
   // Priority 1: If we have a completed streaming article (generation finished), show that
-  if (streamingArticle.value && !isGenerating.value) {
+  if (currentStreamingArticle.value && !isGenerating.value) {
     console.log('Returning streaming article finished')
-    return streamingArticle.value
+    return currentStreamingArticle.value
   }
   
   // Priority 2: If generating and we have partial streaming content, show that
-  if (isGenerating.value && streamingArticle.value) {
+  if (isGenerating.value && currentStreamingArticle.value) {
     console.log('Returning streaming article generating')
-    return streamingArticle.value
+    return currentStreamingArticle.value
   }
   
   // Priority 3: Show the original API response (article or proto)
