@@ -22,6 +22,13 @@ Wiki Surfing is an AI-powered endless wiki generator built with a modern full-st
 
 ### 🚀 Getting Started
 
+#### Quick Start
+```bash
+cp docker-compose.example.yaml docker-compose.yaml
+# (modify docker-compose.yaml for key/port settings)
+docker compose up -d
+```
+
 #### Backend Setup
 
 Set environment:
