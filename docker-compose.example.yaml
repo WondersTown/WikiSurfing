@@ -1,0 +1,26 @@
+version: "3.9"
+
+services:
+  core:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - ./core:/app
+      # - ./core/data:/app/data
+    environment:
+      - OPENROUTER_API_KEY=your_openrouter_api_key
+      # (optional) - LOGFIRE_TOKEN=your_logfire_api_key
+    command: /bin/sh -lc "pip install pdm && pdm use -f && pdm sync && pdm run python -m tequila.api"
+    ports:
+      - "8000:8000"
+
+  web:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./web:/app
+    environment:
+      - API_URL=http://core:8000/api
+    command: /bin/sh -lc "corepack enable && pnpm install --frozen-lockfile && pnpm build && pnpm preview --host 0.0.0.0"
+    ports:
+      - "8333:4173"
