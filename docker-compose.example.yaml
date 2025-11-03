@@ -11,8 +11,6 @@ services:
       - OPENROUTER_API_KEY=your_openrouter_api_key
       # (optional) - LOGFIRE_TOKEN=your_logfire_api_key
     command: /bin/sh -lc "pip install pdm && pdm use -f && pdm sync && pdm run python -m tequila.api"
-    ports:
-      - "8000:8000"
 
   web:
     image: node:20-alpine
