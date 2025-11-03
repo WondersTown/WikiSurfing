@@ -19,6 +19,6 @@ services:
       - ./web:/app
     environment:
       - API_URL=http://core:8000/api
-    command: /bin/sh -lc "corepack enable && pnpm install --frozen-lockfile && pnpm build && node .output/server/index.mjs"
+    command: /bin/sh -lc "corepack enable && pnpm install --frozen-lockfile && pnpm dev --port 3000"
     ports:
       - "8333:3000"
