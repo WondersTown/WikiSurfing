@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+const apiUrl = process.env.API_URL || 'http://localhost:8000/api'
+
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
@@ -6,7 +8,12 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.css'],
 
   runtimeConfig: {
-    apiUrl: process.env.API_URL || 'http://localhost:8000/api'
+    apiUrl
+  },
+
+  routeRules: {
+    '/api': { proxy: apiUrl },
+    '/api/**': { proxy: `${apiUrl}/**` }
   },
 
   modules: [
@@ -15,21 +22,5 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     '@nuxt/ui',
     '@nuxtjs/mdc'
-  ],
-
-  nitro: {
-    devProxy: {
-      '/api': {
-        target: process.env.API_URL || 'http://localhost:8000/api',
-        changeOrigin: true,
-        prependPath: true,
-        // Support Server-Sent Events
-        ws: false,
-        headers: {
-          'Cache-Control': 'no-cache',
-          'Connection': 'keep-alive'
-        }
-      }
-    }
-  }
+  ]
 })

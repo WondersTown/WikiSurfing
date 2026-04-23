@@ -30,7 +30,7 @@ async def get_space(space_name: str) -> Space:
 
 def new_model():
     return OpenAIChatModel(
-        model_name="qwen/qwen3-235b-a22b-2507", provider="openrouter",
+        model_name="google/gemini-3-flash-preview", provider="openrouter",
         # settings=ModelSettings(
         #     temperature=0.8,
         # )

@@ -3,10 +3,10 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
-    "dev": "env $(cat .dev.env | xargs) nuxt dev --host 0.0.0.0",
+    "build": "set -a; [ -f .dev.env ] && . ./.dev.env; set +a; nuxt build",
+    "dev": "set -a; [ -f .dev.env ] && . ./.dev.env; set +a; nuxt dev --host 0.0.0.0",
     "generate": "nuxt generate",
-    "preview": "nuxt preview",
+    "preview": "set -a; [ -f .dev.env ] && . ./.dev.env; set +a; nuxt preview",
     "postinstall": "nuxt prepare",
     "generate-api": "openapi-ts"
   },

@@ -159,12 +159,13 @@ app.openapi = lambda: schema
 
 
 if __name__ == "__main__":
+    import os
     import uvicorn
     from dotenv import load_dotenv
     import logfire
     import logging
 
-    logfire.configure()
+    logfire.configure(send_to_logfire=bool(os.getenv("LOGFIRE_TOKEN")))
     logfire.instrument_pydantic_ai()
     logfire.instrument_fastapi(app)
     logging.basicConfig(handlers=[logfire.LogfireLoggingHandler()])

@@ -3,4 +3,5 @@ docker-compose.yaml
 default/
 output/
 dev/
+web/.pnpm-store/
 .env
